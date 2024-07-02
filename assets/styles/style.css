@@ -18,6 +18,27 @@ header h1 {
     text-align: center; /* Alinhamento do texto no centro */
 }
 
+.carousel-inner {
+    text-align: center; /* Centraliza o texto dentro do carousel */
+}
+
+.carousel-item {
+    display: none; /* Inicia oculto até o teste começar */
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.carousel-item h5 {
+    text-align: left; /* Alinha o título da pergunta à esquerda */
+}
+
+.carousel-item .options {
+    text-align: left; /* Alinha o texto das opções à esquerda */
+    margin-top: 10px; /* Espaçamento superior para as opções */
+}
+
 #logo {
     float: left;
     margin-right: 10px;

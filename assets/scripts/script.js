@@ -27,7 +27,9 @@ function createCarouselItems() {
         itemDiv.innerHTML = `
             <div class="d-flex flex-column justify-content-center align-items-center">
                 <h5>${q.question}</h5>
-                ${shuffledOptions}
+                <div class="options">
+                    ${shuffledOptions}
+                </div>
                 <div class="button-group mt-3">
                     ${index !== 0 ? `<button class="btn btn-secondary mr-2" onclick="prevQuestion()">Back</button>` : ''}
                     ${index !== questions.length - 1 ? `<button class="btn btn-primary next-btn" onclick="nextQuestion(${index})" disabled>Next</button>` : `<button class="btn btn-success finish-btn" onclick="finishTest()" disabled>Finish</button>`}
