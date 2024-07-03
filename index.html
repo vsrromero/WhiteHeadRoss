@@ -22,7 +22,11 @@
             <p>The VAK learning styles model suggests that most people can be divided into one of three preferred styles of learning.<br>
             On the following test, you must choose one of three that most represents how you generally behave.<br>
             At the end of the test you will be able to download your test and then forward to your tutor.</p>
-            <button id="startTest" class="btn btn-primary">Iniciar Teste</button>
+            <div class="form-group">
+                <label for="inputName">Name:</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Type your name here" required>
+            </div>
+            <button id="startTest" class="btn btn-primary" disabled>Start Test</button>
         </div>
 
         <div id="questionnaire" class="carousel slide" data-interval="false">
