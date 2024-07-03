@@ -1,29 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
 body {
-    padding-top: 100px; /* Para garantir espaço para o header fixo */
+    padding-top: 100px; 
+    font-family: 'Lato', sans-serif; 
+    font-size: 1.2em;
+    background-color: #F2EDF1;
 }
 
 header {
     background-color: #d9ebea;
     padding: 10px;
-    margin-bottom: 20px;
-    display: flex; /* Torna o header um contêiner flexível */
-    flex-direction: column; /* Coloca os itens em coluna */
-    align-items: center; /* Centraliza os itens horizontalmente */
-    justify-content: center; /* Centraliza os itens verticalmente */
-    height: 150px; /* Altura opcional para o cabeçalho */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 150px; 
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+a:hover {
+    text-decoration: none; 
+    color: #000;
 }
 
 header h1 {
-    margin-top: 60px; /* Espaço entre o cabeçalho e o título */
-    text-align: center; /* Alinhamento do texto no centro */
+    margin: 60px 0 0 0; 
+    text-align: center; 
+}
+
+main {
+    display: flex; 
+    flex-direction: column; 
+}
+
+main h2 {
+    text-align: center;
+    margin: 60px 0 20px 0; 
+
+}
+
+main p {
+    width: 70%;
+    text-align: left;
+    margin: 0 auto 20px auto;
+}
+
+button {
+    margin-top: 10px; 
 }
 
 .carousel-inner {
-    text-align: center; /* Centraliza o texto dentro do carousel */
+    text-align: center;
 }
 
 .carousel-item {
-    display: none; /* Inicia oculto até o teste começar */
+    display: none; 
 }
 
 .carousel-item.active {
@@ -31,12 +66,28 @@ header h1 {
 }
 
 .carousel-item h5 {
-    text-align: left; /* Alinha o título da pergunta à esquerda */
+    text-align: left;
 }
 
 .carousel-item .options {
-    text-align: left; /* Alinha o texto das opções à esquerda */
-    margin-top: 10px; /* Espaçamento superior para as opções */
+    text-align: left;
+    margin-top: 10px; 
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.form-check-input {
+    margin-top: 0;
+    margin-left: -30px; 
+    
+}
+
+.options {
+    font-size: 1.1em;
 }
 
 #logo {
@@ -47,49 +98,50 @@ header h1 {
 }
 
 #intro {
-    text-align: left;
-    margin-top: 120px;
+    text-align: center;
+    margin-top: 50px;
     margin-bottom: 20px;
 }
 
 #questionnaire {
-    display: none; /* Inicia oculto até o teste começar */
+    display: none; 
     margin-top: 120px;
 }
 
 #result {
-    display: none; /* Inicia oculto até o teste terminar */
+    display: none; 
     text-align: center;
-    margin-top: 120px !important;
+    margin: 60px 0 0 0 !important;
 }
 
 #resultText h2 {
     text-align: center;
+    margin-top: 50px;
 }
 
 #resultText p {
     text-align: left;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
-/* Media query for screens smaller than 768px */
 @media (max-width: 768px) {
     header {
         display: flex;
-        flex-direction: column; /* Coloca os itens em coluna */
-        height: 200px; /* Aumenta a altura do cabeçalho */
-        align-items: center; /* Centraliza os itens horizontalmente */
+        flex-direction: column; 
+        height: 200px; 
+        align-items: center; 
     }
 
     #logo {
         margin-top: 30px;
-        width: 40%; /* Aumenta o tamanho do logotipo */
-        align-self: center; /* Centraliza o logotipo horizontalmente */
+        width: 40%; 
+        align-self: center; 
     }
 
     header h1 {
-        margin-top: 110px; /* Aumenta o espaço entre o cabeçalho e o título */
-        font-size: 1.5em; /* Diminui o tamanho da fonte */
+        margin-top: 110px; 
+        font-size: 1.5em; 
         align-items: start;
     }
 }
