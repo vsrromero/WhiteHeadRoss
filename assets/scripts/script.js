@@ -26,7 +26,7 @@ function createCarouselItems() {
         itemDiv.className = `carousel-item ${index === 0 ? 'active' : ''}`;
         itemDiv.innerHTML = `
             <div class="d-flex flex-column justify-content-center align-items-center">
-                <h5>${q.question}</h5>
+                <h3>${q.question}</h3>
                 <div class="options">
                     ${shuffledOptions}
                 </div>
