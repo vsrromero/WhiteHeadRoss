@@ -2,19 +2,20 @@ const questions = [
     { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
     { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
     { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
-    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
-    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
-    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
-    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
-    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
-    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
-    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
-    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
-    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
+    
     // Adicione mais perguntas conforme necessário
 ];
 
 let answers = [];
+let userName = '';
+
+// Você pode atribuir o valor dentro do evento de clique, ou em outro evento que faça sentido no seu fluxo
+document.getElementById('startTest').addEventListener('click', () => {
+    userName = document.getElementById('inputName').value;
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('questionnaire').style.display = 'block';
+    createCarouselItems();
+});
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -128,21 +129,26 @@ function downloadPDF() {
     const logoX = (pageWidth - logoWidth) / 2;
     doc.addImage(logo, 'PNG', logoX, 10, logoWidth, logoHeight);
 
+    // Adicionar o nome do usuário
+    doc.setFontSize(14);
+    doc.text(`Name: ${userName}`, 10, 50);
+
+
     // Adicionando título na primeira página
     const title = document.querySelector('#resultText h2').textContent;
     doc.setFontSize(16);
     const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const titleX = (pageWidth - titleWidth) / 2;
-    doc.text(title, titleX, 50, { align: 'center' });
+    doc.text(title, titleX, 60, { align: 'center' });
 
     // Adicionando o texto do resultado com formatação na primeira página
     const content = document.querySelector('#resultText p').textContent;
     const splitText = doc.splitTextToSize(content, 250);
     doc.setFontSize(12);
-    doc.text(splitText, 10, 60);
+    doc.text(splitText, 10, 70);
 
     // Adicionando as perguntas e respostas escolhidas em páginas subsequentes
-    let yPos = 90; // Posição vertical inicial para as perguntas
+    let yPos = 100; // Posição vertical inicial para as perguntas
     let currentPage = 1; // Número da página atual
 
     questions.forEach((q, index) => {
@@ -178,10 +184,6 @@ function downloadPDF() {
 
     doc.save('VAK_Learning_Styles_Result.pdf');
 }
-
-
-
-
 
 function restartTest() {
     document.getElementById('result').style.display = 'none';
@@ -222,3 +224,23 @@ function addRadioListeners() {
         });
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const inputName = document.getElementById('inputName');
+    const startTestBtn = document.getElementById('startTest');
+
+    inputName.addEventListener('input', function() {
+        if (inputName.value.trim() !== '') {
+            startTestBtn.disabled = false;
+        } else {
+            startTestBtn.disabled = true;
+        }
+    });
+
+    startTestBtn.addEventListener('click', function() {
+        // Aqui você pode adicionar a lógica para iniciar o teste, como chamar createCarouselItems() etc.
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('questionnaire').style.display = 'block';
+        createCarouselItems();
+    });
+});
