@@ -2,6 +2,15 @@ const questions = [
     { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
     { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
     { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
+    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
+    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
+    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
+    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
+    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
+    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
+    { question: "When I operate new equipment I generally:", options: ["read the instructions first", "listen to an explanation from someone who has used it before", "go ahead and have a go, I can figure it out as I use it"], ids: [1, 2, 3] },
+    { question: "When I need directions for travelling I usually:", options: ["look at a map", "ask for spoken directions", "follow my nose and maybe use a compass"], ids: [1, 2, 3] },
+    { question: "When I cook a new dish, I like to:", options: ["follow a written recipe", "call a friend for an explanation", "follow my instincts, testing as I cook"], ids: [1, 2, 3] },
     // Adicione mais perguntas conforme necessário
 ];
 
@@ -119,29 +128,26 @@ function downloadPDF() {
     const logoX = (pageWidth - logoWidth) / 2;
     doc.addImage(logo, 'PNG', logoX, 10, logoWidth, logoHeight);
 
-    // Adicionando título
+    // Adicionando título na primeira página
     const title = document.querySelector('#resultText h2').textContent;
     doc.setFontSize(16);
-    
-    // Centralizando o título
     const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-    const titleX = (pageWidth) / 2;
-    
+    const titleX = (pageWidth - titleWidth) / 2;
     doc.text(title, titleX, 50, { align: 'center' });
 
-    // Adicionando o texto do resultado com formatação
+    // Adicionando o texto do resultado com formatação na primeira página
     const content = document.querySelector('#resultText p').textContent;
-    const splitText = doc.splitTextToSize(content, 250); // Divide o texto em linhas, ajustando ao tamanho da página
-    console.log(pageWidth);
+    const splitText = doc.splitTextToSize(content, 250);
     doc.setFontSize(12);
-    doc.text(splitText, 10, 60); // Começa a 30px da parte superior da página
+    doc.text(splitText, 10, 60);
 
-    // Adicionando as perguntas e respostas escolhidas
+    // Adicionando as perguntas e respostas escolhidas em páginas subsequentes
     let yPos = 90; // Posição vertical inicial para as perguntas
+    let currentPage = 1; // Número da página atual
+
     questions.forEach((q, index) => {
         const selectedAnswer = answers[index];
         const questionText = `${index + 1}. ${q.question}`;
-
         const options = q.options.map((option, idx) => {
             if (q.ids[idx] === selectedAnswer) {
                 return `• ${capitalizeFirstLetter(option)}`; // Marca a resposta escolhida
@@ -151,13 +157,29 @@ function downloadPDF() {
         });
 
         const questionWithAnswer = [questionText, ...options].join('\n');
-        doc.setFont('helvetica', 'normal'); // Define a fonte e o estilo para normal
+        const textLines = doc.splitTextToSize(questionWithAnswer, 250);
+
+        // Verifica se há espaço suficiente na página atual para as perguntas e respostas
+        const lineHeight = doc.getTextDimensions('M').h; // Altura da linha de texto
+        const linesPerPage = Math.floor((doc.internal.pageSize.getHeight() - yPos) / lineHeight);
+
+        if (linesPerPage < textLines.length + 2) { // +2 para segurança, ajuste conforme necessário
+            doc.addPage(); // Adiciona uma nova página
+            currentPage++;
+
+            // Ajuste da posição inicial para a próxima página
+            yPos = currentPage > 1 ? 20 : 10; // Define uma margem maior no topo a partir da segunda página
+        }
+
+        doc.setFont('helvetica', 'normal');
         doc.text(questionWithAnswer, 10, yPos);
-        yPos += doc.getTextDimensions(questionWithAnswer).h + 20; // Aumenta o espaço entre perguntas
+        yPos += (textLines.length + 1) * lineHeight + 10; // Aumenta o espaço entre perguntas
     });
 
     doc.save('VAK_Learning_Styles_Result.pdf');
 }
+
+
 
 
 
