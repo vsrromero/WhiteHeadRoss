@@ -109,27 +109,35 @@ function finishTest() {
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Adicionar o logo
+    const logo = new Image();
+    logo.src = 'assets/imgs/logo.png';
+    const logoHeight = 30; // Ajuste conforme necessário
+    const logoWidth = (logoHeight / logo.height) * logo.width;
+    const logoX = (pageWidth - logoWidth) / 2;
+    doc.addImage(logo, 'PNG', logoX, 10, logoWidth, logoHeight);
 
     // Adicionando título
     const title = document.querySelector('#resultText h2').textContent;
     doc.setFontSize(16);
     
     // Centralizando o título
-    const pageWidth = doc.internal.pageSize.getWidth();
     const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const titleX = (pageWidth) / 2;
     
-    doc.text(title, titleX, 20, { align: 'center' });
+    doc.text(title, titleX, 50, { align: 'center' });
 
     // Adicionando o texto do resultado com formatação
     const content = document.querySelector('#resultText p').textContent;
     const splitText = doc.splitTextToSize(content, 250); // Divide o texto em linhas, ajustando ao tamanho da página
     console.log(pageWidth);
     doc.setFontSize(12);
-    doc.text(splitText, 10, 30); // Começa a 30px da parte superior da página
+    doc.text(splitText, 10, 60); // Começa a 30px da parte superior da página
 
     // Adicionando as perguntas e respostas escolhidas
-    let yPos = 70; // Posição vertical inicial para as perguntas
+    let yPos = 90; // Posição vertical inicial para as perguntas
     questions.forEach((q, index) => {
         const selectedAnswer = answers[index];
         const questionText = `${index + 1}. ${q.question}`;
