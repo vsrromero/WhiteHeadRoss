@@ -7,6 +7,10 @@ const questions = [
 
 let answers = [];
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -105,9 +109,49 @@ function finishTest() {
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text(document.getElementById('resultText').textContent, 10, 10);
+
+    // Adicionando título
+    const title = document.querySelector('#resultText h2').textContent;
+    doc.setFontSize(16);
+    
+    // Centralizando o título
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const titleX = (pageWidth) / 2;
+    
+    doc.text(title, titleX, 20, { align: 'center' });
+
+    // Adicionando o texto do resultado com formatação
+    const content = document.querySelector('#resultText p').textContent;
+    const splitText = doc.splitTextToSize(content, 250); // Divide o texto em linhas, ajustando ao tamanho da página
+    console.log(pageWidth);
+    doc.setFontSize(12);
+    doc.text(splitText, 10, 30); // Começa a 30px da parte superior da página
+
+    // Adicionando as perguntas e respostas escolhidas
+    let yPos = 70; // Posição vertical inicial para as perguntas
+    questions.forEach((q, index) => {
+        const selectedAnswer = answers[index];
+        const questionText = `${index + 1}. ${q.question}`;
+
+        const options = q.options.map((option, idx) => {
+            if (q.ids[idx] === selectedAnswer) {
+                return `• ${capitalizeFirstLetter(option)}`; // Marca a resposta escolhida
+            } else {
+                return `  ${capitalizeFirstLetter(option)}`;
+            }
+        });
+
+        const questionWithAnswer = [questionText, ...options].join('\n');
+        doc.setFont('helvetica', 'normal'); // Define a fonte e o estilo para normal
+        doc.text(questionWithAnswer, 10, yPos);
+        yPos += doc.getTextDimensions(questionWithAnswer).h + 20; // Aumenta o espaço entre perguntas
+    });
+
     doc.save('VAK_Learning_Styles_Result.pdf');
 }
+
+
 
 function restartTest() {
     document.getElementById('result').style.display = 'none';
